@@ -28,7 +28,7 @@ public class DepartmentService {
      * @return
      */
     public ApiResponse addDepartment(DepartmentDto departmentDto) {
-        if (departmentrepository.existsAllByName(departmentDto.getName()))
+        if (departmentrepository.existsAllByNameAndCompanyId(departmentDto.getName(),departmentDto.getCompanyId()))
             return new ApiResponse("Already exist Department",false);
         Optional<Company> optionalCompany = companyRepository.findById(departmentDto.getCompanyId());
         if (!optionalCompany.isPresent())
@@ -50,7 +50,7 @@ public class DepartmentService {
         Optional<Department> departmentOptional = departmentrepository.findById(id);
         if (!departmentOptional.isPresent())
             return new ApiResponse("Department not found",false);
-        if (departmentrepository.existsAllByNameAndIdNot(departmentDto.getName(), id))
+        if (departmentrepository.existsAllByNameAndCompanyIdAndIdNot(departmentDto.getName(),departmentDto.getCompanyId(),id))
             return new ApiResponse("Already exist Department name",false);
         Department department = departmentOptional.get();
         department.setName(departmentDto.getName());
